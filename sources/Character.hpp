@@ -1,6 +1,3 @@
-//
-// Created by HOME on 02/05/2023.
-//
 
 #ifndef COWBOY_VS_NINJA_A_CHARACTER_HPP
 #define COWBOY_VS_NINJA_A_CHARACTER_HPP
@@ -22,20 +19,19 @@ public:
 
     Character(string name, int hitpoints, Point &location);
 
-    virtual bool isAlive();
+    bool isAlive();
 
-    virtual double distance(Character *other);
+    double distance(Character *other);
 
-    virtual void hit(int hitNum);
+    void hit(int hitNum);
 
-    virtual string getName();
+    string getName();
 
-    virtual Point& getLocation();
+    Point& getLocation();
 
-    virtual string print();
+    virtual string print() = 0;
 
-    ~Character();
-
+    virtual ~Character();
 
 };
 

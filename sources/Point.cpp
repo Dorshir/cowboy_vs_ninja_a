@@ -16,7 +16,7 @@ double Point::getX() const {
     return x;
 }
 
-double Point::getY() {
+double Point::getY() const{
     return y;
 }
 

@@ -5,3 +5,7 @@
 YoungNinja::YoungNinja(string name, Point &location) : Ninja(std::move(name), 100, location, 14) {}
 
 YoungNinja::YoungNinja(string name, Point&& location): Ninja(std::move(name), 100, location, 14) {}
+
+string YoungNinja::print() {return "";}
+
+YoungNinja::~YoungNinja() = default;

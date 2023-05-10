@@ -2,10 +2,6 @@
 
 #include <utility>
 
-string Character::print() {
-    return "";
-}
-
 Point &Character::getLocation() {
     return location;
 }

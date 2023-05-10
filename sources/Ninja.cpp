@@ -1,6 +1,4 @@
-//
-// Created by HOME on 02/05/2023.
-//
+
 #include "Ninja.hpp"
 
 #include <utility>

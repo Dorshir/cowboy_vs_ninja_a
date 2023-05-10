@@ -11,6 +11,11 @@ public:
     YoungNinja(string name, Point &location);
 
     YoungNinja(string name, Point &&location);
+
+    string print() override;
+
+    ~YoungNinja() override;
+
 };
 
 #endif //COWBOY_VS_NINJA_A_YOUNGNINJA_HPP

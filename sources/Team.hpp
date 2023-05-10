@@ -18,22 +18,22 @@ namespace ariel{}
 
 class Team {
 
-    std::list<Character> members;
+protected:
+
+    std::list<Character*> members[10];
     Character *leader;
 
 public:
 
     explicit Team(Character *leader);
 
-    void add(Cowboy *newMember);
+    void add(Character *newMember);
 
-    void add(Ninja *newMember);
-
-    void attack(Team *enemyTeam);
+    virtual void attack(Team *enemyTeam);
 
     int stillAlive();
 
-    void print();
+    virtual void print();
 
     ~Team();
 

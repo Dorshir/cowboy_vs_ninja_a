@@ -20,9 +20,9 @@ public:
 
     ~Point();
 
-    double getX() const;
+    [[nodiscard]] double getX() const;
 
-    double getY();
+    [[nodiscard]] double getY() const;
 };
 
 

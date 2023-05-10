@@ -1,11 +1,7 @@
 #include "Team.hpp"
 
 
-void Team::add(Cowboy *newMember) {
-
-}
-
-void Team::add(Ninja *newMember) {
+void Team::add(Character *newMember) {
 
 }
 

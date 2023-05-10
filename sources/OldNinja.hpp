@@ -11,6 +11,11 @@ public:
     OldNinja(string name, Point &&location);
 
     OldNinja(string name, Point &location);
+
+    string print() override;
+
+    ~OldNinja() override;
+
 };
 
 #endif //COWBOY_VS_NINJA_A_OLDNINJA_HPP

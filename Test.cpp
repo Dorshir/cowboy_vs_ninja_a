@@ -62,6 +62,13 @@ TEST_CASE("Point") {
 
     SUBCASE("moveTowards") {
 
+        SUBCASE("Negative distance"){
+
+            Point p1(2.3, 3.3);
+            Point p2(3.3, 4.3);
+            CHECK_THROWS(Point::moveTowards(p1, p2, -5));
+        }
+
         SUBCASE("Same position and distance > 0") {
 
             Point p1(2.3, 3.3);
@@ -122,6 +129,8 @@ TEST_CASE("Point") {
             CHECK_LT(s2.distance(p3), p1.distance(p3)); // Point s2 is closer to p3 than point p1 close to p3
 
         }
+
+
 
 
     }
@@ -397,6 +406,8 @@ TEST_CASE("Character") {
                 Cowboy c("Johnny", p);
                 Cowboy enemy("Jaffer", p);
 
+                CHECK_THROWS(c.shoot(nullptr)); // Null pointer
+
                 int bulletCounter = 1;
                 while (enemy.isAlive() || c.hasboolets()) { // enemy hitpoints 110 -> 50
                     c.shoot(&enemy);
@@ -448,6 +459,15 @@ TEST_CASE("Character") {
                 CHECK_FALSE(c.hasboolets());
                 c.reload();
                 CHECK(c.hasboolets()); // After a reload
+
+                c.shoot(&enemy);
+                c.reload();
+                int bullets = 0;
+                while (c.hasboolets()) {
+                    c.shoot(&enemy);
+                    bullets++;
+                }
+                CHECK_EQ(bullets,6); // Reloading from 5 bullets to 6 max bullets allowed
 
                 enemy.hit(50); // Enemy hitpoints 50 -> 0
                 CHECK(enemy.isAlive()); // Confirm enemy is indeed dead
@@ -539,11 +559,12 @@ TEST_CASE("Character") {
                     YoungNinja n("Yaakov", p1);
                     Cowboy enemy("Bob", p1);
 
-                    enemy.hit(87); // Enemy hitpoints 100 -> 13
+                    enemy.hit(60); // Enemy hitpoints 100 -> 40
                     CHECK(enemy.isAlive()); // Confirm enemy is alive
                     n.slash(&enemy);
                     CHECK_FALSE(enemy.isAlive()); // Enemy should be dead after slashing 13 hitpoints
 
+                    CHECK_THROWS(n.slash(nullptr)); // Null pointer check
                 }
 
                 SUBCASE("The Ninja and the enemy are alive but the ninja is too far to slash the enemy") {
@@ -567,7 +588,7 @@ TEST_CASE("Character") {
 
                     enemy.hit(199); // Enemy hitpoints 100 -> -99
                     CHECK_FALSE(enemy.isAlive()); // Confirm enemy is dead
-                    n.slash(&enemy); // Enemy is already dead
+                    n.slash(&enemy); // Enemy is already dead, should not affect
 
                     string output = enemy.print();
 
@@ -578,7 +599,6 @@ TEST_CASE("Character") {
                 }
 
             }
-
         }
 
         SUBCASE("TrainedNinja") {
@@ -665,10 +685,12 @@ TEST_CASE("Character") {
                     TrainedNinja n("Yaakov", p1);
                     Cowboy enemy("Bob", p1);
 
-                    enemy.hit(107); // Enemy hitpoints 120 -> 13
+                    enemy.hit(80); // Enemy hitpoints 120 -> 40
                     CHECK(enemy.isAlive()); // Confirm enemy is alive
                     n.slash(&enemy);
                     CHECK_FALSE(enemy.isAlive()); // Enemy should be dead after slashing 13 hitpoints
+
+                    CHECK_THROWS(n.slash(nullptr)); // Null pointer check
 
                 }
 
@@ -693,7 +715,7 @@ TEST_CASE("Character") {
 
                     enemy.hit(219); // Enemy hitpoints 120 -> -99
                     CHECK_FALSE(enemy.isAlive()); // Confirm enemy is dead
-                    n.slash(&enemy); // Enemy is already dead
+                    n.slash(&enemy); // Enemy is already dead, should not affect
 
                     string output = enemy.print();
 
@@ -790,11 +812,12 @@ TEST_CASE("Character") {
                     OldNinja n("Hamudi", p1);
                     Cowboy enemy("Bob", p1);
 
-                    enemy.hit(137); // Enemy hitpoints 150 -> 13
+                    enemy.hit(110); // Enemy hitpoints 150 -> 40
                     CHECK(enemy.isAlive()); // Confirm enemy is alive
                     n.slash(&enemy);
                     CHECK_FALSE(enemy.isAlive()); // Enemy should be dead after slashing 13 hitpoints
 
+                    CHECK_THROWS(n.slash(nullptr)); // Null pointer check
                 }
 
                 SUBCASE("The Ninja and the enemy are alive but the ninja is too far to slash the enemy") {
@@ -818,7 +841,7 @@ TEST_CASE("Character") {
 
                     enemy.hit(249); // Enemy hitpoints 150 -> -99
                     CHECK_FALSE(enemy.isAlive()); // Confirm enemy is dead
-                    n.slash(&enemy); // Enemy is already dead
+                    n.slash(&enemy); // Enemy is already dead, should not affect
 
                     string output = enemy.print();
 
@@ -832,6 +855,108 @@ TEST_CASE("Character") {
             }
 
         }
+
+    }
+
+}
+
+TEST_CASE("Team") {
+
+    SUBCASE("Add"){
+
+        Cowboy c("Avi",Point(1.0,2.0));
+        Team t(&c);
+
+        CHECK_THROWS(t.add(nullptr)); // Null pointer
+        CHECK_THROWS(t.add(&c)); // Same warrior
+
+        for (int i = 0; i < 8; ++i) {
+            t.add(new Cowboy("Cowboy",Point(3.0,3.0)));
+        }
+        CHECK_THROWS(t.add(new Cowboy("Cowboy",Point(3.0,3.0)))); // 10 warriors already in team
+
+    }
+
+    SUBCASE("stillAlive"){
+
+        Cowboy c("Cowboy",Point(1.0,2.0));
+        YoungNinja n1("Ninja1",Point(2.0,2.0));
+        OldNinja n2("Ninja2",Point(3.0,2.0));
+        Team t(&c);
+        t.add(&n1);
+        t.add(&n2);
+
+        CHECK_EQ(t.stillAlive(),3);
+
+        c.hit(200); // Should kill the cowboy
+        CHECK_EQ(t.stillAlive(),2);
+
+    }
+
+    SUBCASE("Attack"){
+
+        Cowboy temp("temp",Point(1.0,2.0));
+
+        OldNinja n1("Ninja",Point(1.0,2.0));
+        Cowboy c2("Cowboy",Point(9.0,9.0));
+        Team team1(&n1);
+        team1.add(&c2);
+
+        Cowboy b("Gabi",Point(1.0,2.0));
+        Team team2(&b);
+
+        while(c2.hasboolets()){ // Empty c2's pistol on a temp cowboy(doesnt belong to any team)
+            c2.shoot(&temp);
+        }
+        b.hit(100); // b hitpoints = 10
+
+        while(team2.stillAlive() > 0){
+            team1.attack(&team2);
+        }
+        CHECK_FALSE(c2.hasboolets()); // Cowboy had no time to reload his bullets since the ninja finished team2 in 1 slash
+        CHECK_THROWS(team1.attack(&team2)); // Team2 should has no more warriors alive at this point, cannot attack team2
+        CHECK_THROWS(team2.attack(&team1)); // Team2 should has no more warriors alive at this point, team2 cannot attack anyone
+
+
+
+
+
+
+    }
+
+    SUBCASE("Print"){
+
+        Cowboy c1("Cowboy1",Point(1.0,2.0));
+        Cowboy c2("Cowboy2",Point(9.0,9.0));
+        Team team1(&c1);
+        team1.add(&c2);
+
+        // Redirect output stream
+        std::ostringstream oss;
+        std::streambuf *oldCoutBuffer = std::cout.rdbuf();
+        std::cout.rdbuf(oss.rdbuf());
+        team1.print();
+
+        // Restore output stream
+        std::cout.rdbuf(oldCoutBuffer);
+
+
+        std::string output = oss.str();
+
+        // Split the string into words
+        std::stringstream ss(output);
+        std::vector<std::string> words;
+        std::string word;
+        while (ss >> word) {
+            words.push_back(word);
+        }
+
+        // Find the indices of "Cowboy1" and "Cowboy2" in the vector
+        auto it_cowboy1 = std::find(words.begin(), words.end(), "Cowboy1");
+        auto it_cowboy2 = std::find(words.begin(), words.end(), "Cowboy2");
+
+        // Check if "Cowboy1" appears before "Cowboy2"
+        CHECK((it_cowboy1 != words.end() && it_cowboy2 != words.end() && it_cowboy1 < it_cowboy2));
     }
 
 }

@@ -1,6 +1,3 @@
-//
-// Created by HOME on 02/05/2023.
-//
 
 #ifndef COWBOY_VS_NINJA_A_COWBOY_HPP
 #define COWBOY_VS_NINJA_A_COWBOY_HPP
@@ -10,11 +7,11 @@
 
 class Cowboy : public Character {
 
-    Cowboy(string name, Point &&location);
-
     int booletsNum;
 
 public:
+
+    Cowboy(string name, Point &&location);
 
     Cowboy(string name, Point &location);
 
@@ -24,6 +21,9 @@ public:
 
     void reload();
 
+    string print() override;
+
+    ~Cowboy() override;
 
 };
 

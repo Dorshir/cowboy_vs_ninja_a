@@ -17,3 +17,9 @@ bool Cowboy::hasboolets() {
 void Cowboy::reload() {
 
 }
+
+string Cowboy::print() {
+    return "";
+}
+
+Cowboy::~Cowboy() = default;

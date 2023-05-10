@@ -7,6 +7,8 @@
 
 class Ninja : public Character {
 
+protected:
+
     int speed;
 
 public:
