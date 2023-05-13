@@ -895,32 +895,57 @@ TEST_CASE("Team") {
 
     SUBCASE("Attack"){
 
-        Cowboy temp("temp",Point(1.0,2.0));
+        SUBCASE("Order of team") {
 
-        OldNinja n1("Ninja",Point(1.0,2.0));
-        Cowboy c2("Cowboy",Point(9.0,9.0));
-        Team team1(&n1);
-        team1.add(&c2);
+            Cowboy temp("temp", Point(1.0, 2.0));
 
-        Cowboy b("Gabi",Point(1.0,2.0));
-        Team team2(&b);
+            OldNinja n1("Ninja", Point(1.0, 2.0));
+            Cowboy c2("Cowboy", Point(9.0, 9.0));
+            Team team1(&n1);
+            team1.add(&c2);
 
-        while(c2.hasboolets()){ // Empty c2's pistol on a temp cowboy(doesnt belong to any team)
-            c2.shoot(&temp);
+            Cowboy b("Gabi", Point(1.0, 2.0));
+            Team team2(&b);
+
+            while (c2.hasboolets()) { // Empty c2's pistol on a temp cowboy(doesnt belong to any team)
+                c2.shoot(&temp);
+            }
+            b.hit(100); // b hitpoints = 10
+
+            while (team2.stillAlive() > 0) {
+                team1.attack(&team2);
+            }
+            CHECK_FALSE(
+                    c2.hasboolets()); // Cowboy had no time to reload his bullets since the ninja finished team2 in 1 slash
+            CHECK_THROWS(
+                    team1.attack(&team2)); // Team2 should has no more warriors alive at this point, cannot attack team2
+            CHECK_THROWS(team2.attack(
+                    &team1)); // Team2 should has no more warriors alive at this point, team2 cannot attack anyone
         }
-        b.hit(100); // b hitpoints = 10
 
-        while(team2.stillAlive() > 0){
-            team1.attack(&team2);
+        SUBCASE("Leader change and victim change during an attack"){
+
+            OldNinja n1("Ninja", Point(1.0, 2.0));
+            Cowboy c2("Cowboy1", Point(9.0, 9.0));
+            Cowboy c3("Cowboy2", Point(1.2, 2.2));
+            Team team1(&n1); // Leader is Ninja
+            team1.add(&c2);
+
+            TrainedNinja n2("Hezi", Point(20.0, 20.0));
+            Cowboy b("Gabi", Point(8.5, 8.5));
+            Team team2(&n2);
+            team2.add(&b);
+
+            n1.hit(150); // Kill the leader of team1
+            b.hit(100); // Cowboy 'Gabi' hitpoints = 10
+
+            double oldDist = n2.distance(&c2);
+            team1.attack(&team2); // Cowboy2 should become the new leader of team1, then next target should be cowboy Gabi
+            CHECK_FALSE(b.isAlive()); // After team1 attack team2, cowboy Gabi should be dead
+            team2.attack(&team1);
+            CHECK((oldDist < n2.distance(&c2))); // After team2 attack team1, ninja Hezi should move closer to cowboy Cowboy1
+
         }
-        CHECK_FALSE(c2.hasboolets()); // Cowboy had no time to reload his bullets since the ninja finished team2 in 1 slash
-        CHECK_THROWS(team1.attack(&team2)); // Team2 should has no more warriors alive at this point, cannot attack team2
-        CHECK_THROWS(team2.attack(&team1)); // Team2 should has no more warriors alive at this point, team2 cannot attack anyone
-
-
-
-
-
 
     }
 
