@@ -18,12 +18,19 @@ namespace ariel{}
 
 class Team {
 
-protected:
+private:
 
-    std::list<Character*> members[10];
+    std::vector<Character*> members;
+
     Character *leader;
 
 public:
+
+    void setLeader(Character* newLeader);
+
+    Character* getLeader();
+
+    vector<Character*> getMembers();
 
     explicit Team(Character *leader);
 
@@ -35,7 +42,15 @@ public:
 
     virtual void print();
 
-    ~Team();
+    virtual ~Team();
+
+    Team(const Team& other) = default;
+
+    Team& operator=(const Team& other) = default;
+
+    Team(Team&& other) = default;
+
+    Team& operator=(Team&& other) = default;
 
 };
 

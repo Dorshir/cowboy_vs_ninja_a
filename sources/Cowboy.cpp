@@ -22,4 +22,3 @@ string Cowboy::print() {
     return "";
 }
 
-Cowboy::~Cowboy() = default;

@@ -8,4 +8,3 @@ YoungNinja::YoungNinja(string name, Point&& location): Ninja(std::move(name), 10
 
 string YoungNinja::print() {return "";}
 
-YoungNinja::~YoungNinja() = default;

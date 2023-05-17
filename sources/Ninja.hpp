@@ -7,11 +7,15 @@
 
 class Ninja : public Character {
 
-protected:
+private:
 
     int speed;
 
 public:
+
+    void setSpeed(int newSpeed);
+
+    int getSpeed();
 
     Ninja(string name, int hitpoints, Point &location, int speed);
 

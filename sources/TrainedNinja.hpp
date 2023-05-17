@@ -15,8 +15,6 @@ public:
 
     string print() override;
 
-    ~TrainedNinja() override;
-
 };
 
 #endif //COWBOY_VS_NINJA_A_TRAINEDNINJA_HPP

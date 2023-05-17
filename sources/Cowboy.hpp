@@ -23,8 +23,6 @@ public:
 
     string print() override;
 
-    ~Cowboy() override;
-
 };
 
 #endif //COWBOY_VS_NINJA_A_COWBOY_HPP

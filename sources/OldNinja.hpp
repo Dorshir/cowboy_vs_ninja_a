@@ -14,7 +14,6 @@ public:
 
     string print() override;
 
-    ~OldNinja() override;
 
 };
 

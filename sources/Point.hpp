@@ -10,7 +10,7 @@ class Point {
 
 public:
 
-    Point(double x, double y) : x(x), y(y) {}
+    Point(double newX, double newY) : x(newX), y(newY) {}
 
     double distance(Point &point);
 
@@ -18,11 +18,24 @@ public:
 
     static Point moveTowards(Point &source, Point &dest, double dist);
 
-    ~Point();
+    ~Point() = default;
 
     [[nodiscard]] double getX() const;
 
     [[nodiscard]] double getY() const;
+
+    // Copy constructor
+    Point(const Point& other) = default;
+
+    // Copy assignment operator
+    Point& operator=(const Point& other) = default;
+
+    // Move constructor
+    Point(Point&& other) = default;
+
+    // Move assignment operator
+    Point& operator=(Point&& other) = default;
+    
 };
 
 

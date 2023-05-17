@@ -10,4 +10,3 @@ string OldNinja::print() {
     return "";
 }
 
-OldNinja::~OldNinja() = default;

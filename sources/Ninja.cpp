@@ -14,3 +14,10 @@ void Ninja::slash(Character *enemy) {
 
 }
 
+void Ninja::setSpeed(int newSpeed){
+    speed = newSpeed;
+}
+
+int Ninja::getSpeed(){
+    return speed;
+}

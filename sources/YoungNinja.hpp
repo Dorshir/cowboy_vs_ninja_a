@@ -14,8 +14,6 @@ public:
 
     string print() override;
 
-    ~YoungNinja() override;
-
 };
 
 #endif //COWBOY_VS_NINJA_A_YOUNGNINJA_HPP

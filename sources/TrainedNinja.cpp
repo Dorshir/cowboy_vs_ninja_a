@@ -10,4 +10,3 @@ string TrainedNinja::print() {
     return "";
 }
 
-TrainedNinja::~TrainedNinja() = default;
